@@ -9,13 +9,22 @@
 
 import processing.video.*;
 
+import java.net.*;
+
 int numPixels;
 int[] backgroundPixels;
 Capture video;
+SimpleThread thread1;
+
+boolean ModeTest=false;
 
 
 void setup() {
   size(640, 480); 
+
+  
+  
+
   
   String[] cameras = Capture.list();
   if (cameras == null) {
@@ -55,6 +64,8 @@ void setup() {
   backgroundPixels = new int[numPixels];
   // Make the pixels[] array available for direct manipulation
   loadPixels();
+   thread1 = new SimpleThread(10000, "a");
+  thread1.start();
 }
 
 void draw() {
@@ -93,8 +104,26 @@ void draw() {
     updatePixels(); // Notify that the pixels[] array has changed
     fill(color(diffR, diffG, diffB));
     rect(5,5,425,25);
+    
+   
     println(presenceSum+" diffR:"+diffR+" diffG:"+diffG+"  diffB:"+diffB); // Print out the total amount of movement
-  }
+     
+     
+      if (thread1.available()) {
+      thread1.setLog(""+minute()+"."+second());
+      thread1.setRouge(int(diffR));
+      thread1.setVert(int(diffG));
+      thread1.setBleu(int(diffB));
+      //thread1.setMoment(""+millis());
+      //thread1.setTemps(""+year()+"-"+rajouteZero(month())+"-"+rajouteZero(day()));
+      //thread1.setJour(""+year()+""+month()+""+day());
+      //thread1.setHeure(""+hour());
+      //thread1.setLog(""+chiffreA+":"+chiffreB+"...("+year()+"-"+month()+"-"+day()+")"+hour()+":"+minute()+".."+millis()+"."+(millis()-int(duree)));
+      //thread1.setLog(""+year()+""+month()+""+day()+""+hour()+""+minute()+"."+millis());
+    }
+
+
+   }
 }
 
 // When a key is pressed, capture the background image into the backgroundPixels
@@ -102,4 +131,199 @@ void draw() {
 void keyPressed() {
   video.loadPixels();
   arraycopy(video.pixels, backgroundPixels);
+}
+
+
+
+String rajouteZero(int tmp)
+{
+  String ret=str(tmp);
+  if (ret.length()==1)
+  {
+    ret="0"+ret;
+  }
+  return ret;
+}
+
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+class SimpleThread extends Thread {
+ 
+  boolean running;           // Is the thread running?  Yes or no?
+  int wait;                  // How many milliseconds should we wait in between executions?
+  String id;                 // Thread name
+  int count;                 // counter
+  int rouge;
+  int vert;
+  int bleu;
+  int rougePrevious;
+  int chiffA;
+  int chiffB;
+  int cur;
+  int cB;
+  int vertPrevious;
+  String temps;
+  String moment;
+  String log;
+  String jour;
+  String heure;
+   boolean available;
+ 
+  // Constructor, create the thread
+  // It is not running by default
+  SimpleThread (int w, String s) {
+    wait = w;
+    running = false;
+    id = s;
+    rouge=0;
+    vert=0;
+    bleu=0;
+    count = 0;
+    vertPrevious=0;
+    rougePrevious=0;
+    chiffA=0;
+    chiffB=0;
+    cur=0;
+    temps="";
+    moment="";
+    log="";
+    jour="";
+    heure="";
+  }
+ 
+  int getCount() {
+       //String[] php = loadStrings("http://www.mpiigotchi.pascalaudet.com/musicpi.php?vala="+count+"&valb=88");
+       //println(count);
+    return count;
+  }
+  
+ void setRouge(int _rouge)
+  {
+    rouge=_rouge;
+  }
+  void setVert(int _vert)
+  {
+    vert=_vert;
+  }
+  
+  void setBleu(int _bleu)
+  {
+    bleu=_bleu;
+  }
+  void setCb(int cb)
+  {
+    cB=cb;
+  }
+  
+   void setChiffA(int cha)
+  {
+    chiffA=cha;
+  }
+  void setChiffB(int chb)
+  {
+    chiffB=chb;
+  }
+  
+   void setLog(String l)
+  {
+    log=l;
+  }
+  
+  void setTemps(String t)
+  {
+    temps=t;
+  }
+  void setMoment(String m)
+  {
+    moment=m;
+  }
+  void setCur(int cu)
+  {
+    cur=cu;
+  }
+  void setJour(String j)
+  {
+    jour=j;
+  }
+  void setHeure(String h)
+  {
+    heure=h;
+  }
+ 
+  // Overriding "start()"
+  void start () {
+    // Set running equal to true
+    running = true;
+    // Print messages
+    println("Starting thread (will execute every " + wait + " milliseconds.)"); 
+    // Do whatever start does in Thread, don't forget this!
+    super.start();
+  }
+ 
+   boolean available() {
+    return available;
+  }
+  
+  // We must implement run, this gets triggered by start()
+//  void run () {
+//    
+//      String[] php = loadStrings("http://www.mpiigotchi.pascalaudet.com/musicpi.php?vala=" + compteurA  + "&valb="+compteurB );
+//    
+//    while (running && count < 10) {
+//      println(id + ": " + count);
+//      count++;
+//      // Ok, let's wait for however long we should wait
+//      try {
+//        sleep((long)(wait));
+//      } catch (Exception e) {
+//      }
+//    }
+//    System.out.println(id + " thread is done!");  // The thread is done when we get to the end of run()
+//  }
+  
+  
+    void run () {
+      println("dans le run");
+    while (running) {
+      //tweets = loadStrings("http://www.learningprocessing.com/php/twitter/searchtweets.php?query=%23Processing");
+    
+      if ((rougePrevious==rouge)&&(vertPrevious==cB))
+      {
+       
+      }else{
+          
+          if (!ModeTest)
+         { 
+          // String[] php = loadStrings("  &log="+log+"&temps="+temps+"&moment="+moment+"&chiffA="+chiffA+"&chiffB="+chiffB+"&cur="+cur+"&jour="+jour+"&heure="+heure+"");
+          //http://localhost:8888/Monilari/monilari.php?rouge=11&vert=22&bleu=33//
+          String[] php = loadStrings("http://localhost:8888/Monilari/monilari.php?rouge="+rouge+"&vert="+vert+"&bleu="+bleu+"");
+         }
+       
+         rougePrevious=rouge;
+         vertPrevious=vert;
+         
+      }      
+      // New data is available!
+      available = true;
+      try {
+        // Wait five seconds
+        sleep((long)(wait));//50
+      } 
+      catch (Exception e) {
+      }
+    }
+  }
+ 
+ 
+  // Our method that quits the thread
+  void quit() {
+    System.out.println("Quitting."); 
+    running = false;  // Setting running to false ends the loop in run()
+    // IUn case the thread is waiting. . .
+    interrupt();
+  }
+  
+  
 }
