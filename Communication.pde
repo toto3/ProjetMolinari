@@ -194,7 +194,7 @@ class SimpleThread extends Thread {
   }
  
   int getCount() {
-       //String[] php = loadStrings("http://www.mpiigotchi.pascalaudet.com/musicpi.php?vala="+count+"&valb=88");
+       //String[] php = loadStrings("musicpi.php?vala="+count+"&valb=88");
        //println(count);
     return count;
   }
@@ -269,7 +269,7 @@ class SimpleThread extends Thread {
   // We must implement run, this gets triggered by start()
 //  void run () {
 //    
-//      String[] php = loadStrings("http://www.mpiigotchi.pascalaudet.com/musicpi.php?vala=" + compteurA  + "&valb="+compteurB );
+//      String[] php = loadStrings("http:/pi.php?vala=" + compteurA  + "&valb="+compteurB );
 //    
 //    while (running && count < 10) {
 //      println(id + ": " + count);
