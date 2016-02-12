@@ -4,6 +4,7 @@
  *
  * Detect the presence of people and objects in the frame using a simple
  * background-subtraction technique. To initialize the background, press a key.
+ https//github.com/toto3/ProjetMolinari.git
  */
 
 
