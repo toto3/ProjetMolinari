@@ -64,6 +64,11 @@ void draw() {
     int diffR = 0;
     int diffG =0;
     int diffB = 0;
+    
+    int ColR = 0;
+    int ColG =0;
+    int ColB = 0;
+    
     for (int i = 0; i < numPixels; i++) { // For each pixel in the video frame...
       // Fetch the current color in that location, and also the color
       // of the background in that spot
@@ -81,16 +86,33 @@ void draw() {
       diffR = abs(currR - bkgdR);
       diffG = abs(currG - bkgdG);
       diffB = abs(currB - bkgdB);
+      
+      if(i==int((width/2)*(height/2))*2+(width/2)   )//num de la pixel du milieu de l'écran
+      {
+        ColR=diffR;
+        ColG=diffG;
+        ColB=diffB;
+   
+      }
       // Add these differences to the running tally
       presenceSum += diffR + diffG + diffB;
       // Render the difference image to the screen
       pixels[i] = color(diffR, diffG, diffB);
+      if(i==int( (width/2)*(height/2))*2+(width/2)   )//num de la pixel du milieu de l'écran
+      {
+        pixels[i] = color(0, 0,0);
+        println(i);
+        println(numPixels);
+      }
       // The following line does the same thing much faster, but is more technical
       //pixels[i] = 0xFF000000 | (diffR << 16) | (diffG << 8) | diffB;
     }
     updatePixels(); // Notify that the pixels[] array has changed
-    fill(color(diffR, diffG, diffB));
+    fill(color(ColR, ColG, ColB));
     rect(5, 5, 425, 25);
+    noStroke();
+    //rect(int(width/2)-5, int(height/2)-5, 10, 10);
+     ellipse(int(width/2)-0, int(height/2)-0, 20, 20);
 
 
     //println(presenceSum+" diffR:"+diffR+" diffG:"+diffG+"  diffB:"+diffB); // Print out the total amount of movement
@@ -98,9 +120,9 @@ void draw() {
 
     if (thread1.available()) {
       thread1.setLog(""+minute()+"."+second());
-      thread1.setRouge(int(diffR));
-      thread1.setVert(int(diffG));
-      thread1.setBleu(int(diffB));
+      thread1.setRouge(int(ColR));
+      thread1.setVert(int(ColG));
+      thread1.setBleu(int(ColB));
       //thread1.setMoment(""+millis());
       thread1.setJour(""+year()+"-"+rajouteZero(month())+"-"+rajouteZero(day()));
       thread1.setHeure(""+rajouteZero(hour())+":"+rajouteZero(minute()));
