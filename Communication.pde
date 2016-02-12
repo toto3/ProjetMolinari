@@ -5,6 +5,7 @@
  * Detect the presence of people and objects in the frame using a simple
  * background-subtraction technique. To initialize the background, press a key.
  https://github.com/toto3/ProjetMolinari.git
+ 
  */
 
 
@@ -92,8 +93,8 @@ void draw() {
     rect(5, 5, 425, 25);
 
 
-    println(presenceSum+" diffR:"+diffR+" diffG:"+diffG+"  diffB:"+diffB); // Print out the total amount of movement
-
+    //println(presenceSum+" diffR:"+diffR+" diffG:"+diffG+"  diffB:"+diffB); // Print out the total amount of movement
+//println(""+hour()+""+year()+"-"+rajouteZero(month())+"-"+rajouteZero(day()));
 
     if (thread1.available()) {
       thread1.setLog(""+minute()+"."+second());
@@ -102,7 +103,7 @@ void draw() {
       thread1.setBleu(int(diffB));
       //thread1.setMoment(""+millis());
       thread1.setJour(""+year()+"-"+rajouteZero(month())+"-"+rajouteZero(day()));
-      thread1.setHeure(""+hour());
+      thread1.setHeure(""+rajouteZero(hour())+":"+rajouteZero(minute()));
       //thread1.setLog(""+chiffreA+":"+chiffreB+"...("+year()+"-"+month()+"-"+day()+")"+hour()+":"+minute()+".."+millis()+"."+(millis()-int(duree)));
       //thread1.setLog(""+year()+""+month()+""+day()+""+hour()+""+minute()+"."+millis());
     }
@@ -282,7 +283,7 @@ class SimpleThread extends Thread {
           //http://localhost:8888/Monilari/monilari.php?rouge=11&vert=22&bleu=33//
           String[] php = loadStrings("http://localhost:8888/Monilari/monilari.php?rouge="+rouge+"&vert="+vert+"&bleu="+bleu+"&jour="+jour+"&heure="+heure);
         }
-
+        println("http://localhost:8888/Monilari/monilari.php?rouge="+rouge+"&vert="+vert+"&bleu="+bleu+"&jour="+jour+"&heure="+heure);
         rougePrevious=rouge;
         vertPrevious=vert;
       }      
