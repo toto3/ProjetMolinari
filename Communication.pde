@@ -6,6 +6,10 @@
  * background-subtraction technique. To initialize the background, press a key.
  https://github.com/toto3/ProjetMolinari.git
  
+ todo:
+ -filtre passe bas pour stabiliser le changement de couleur des bandes
+ -détecteur de stabilité afin de prendre des image de fond quand y a personne devant la cam
+ 
  */
 
 
@@ -18,12 +22,28 @@ int[] backgroundPixels;
 Capture video;
 SimpleThread thread1;
 
-boolean ModeTest=false;
+boolean ModeTest=true;
 String leTemps;
 
-void setup() {
-  size(640, 480); 
+//pixcel entrale 153920
+color pointCentrale;
+color pointHaut;
 
+color[] tableau = new color[11];
+
+color[] RougePrec = new color[11];
+color[] VertPrec = new color[11];
+color[] BleuPrec = new color[11];
+
+int row=640*240;
+int largeurBande=60;
+PImage img;
+boolean prendrePhoto=false;
+
+
+void setup() {
+  size(640, 480); //640
+ //fullScreen();
   String[] cameras = Capture.list();
   if (cameras == null) {
     println("Failed to retrieve the list of available cameras, will try the default...");
@@ -42,6 +62,8 @@ void setup() {
     // Or, the settings can be defined based on the text in the list
     //cam = new Capture(this, 640, 480, "Built-in iSight", 30);
     video.start();
+    img = loadImage("fond.tif");
+
   }
 
   
@@ -53,6 +75,14 @@ void setup() {
   
   thread1 = new SimpleThread(10000, "a");
   thread1.start();
+  
+  RougePrec[0]=0;
+  RougePrec[4]=0;
+   RougePrec[5]=0;
+   RougePrec[6]=0;
+   RougePrec[7]=0;
+   RougePrec[8]=0;
+   RougePrec[9]=0;
 }
 
 void draw() {
@@ -87,33 +117,148 @@ void draw() {
       diffG = abs(currG - bkgdG);
       diffB = abs(currB - bkgdB);
       
-      if(i==int((width/2)*(height/2))*2+(width/2)   )//num de la pixel du milieu de l'écran
+      
+      //test de pixelization
+       //fill(color(diffR, diffG, diffB));
+       //noStroke();
+       //ellipse(int(width/2)-0, int(height/2)-0, 3, 3);
+        ColR=diffR;
+        ColG=diffG;
+        ColB=diffB;
+        
+       switch(i)
+       {
+        case (640*240)+29: tableau[0]=color(ColR, ColG,ColB);break;
+        case (640*240)+29*2: tableau[1]=color(ColR, ColG,ColB); break;
+        case (640*240)+29*3: tableau[2]=color(ColR, ColG,ColB); break;
+        case (640*240)+29*4: tableau[3]=color(ColR, ColG,ColB); break;
+        case (640*240)+29*5: 
+            if(abs( RougePrec[4]-ColR)>15) 
+            {
+             tableau[4]=color(ColR, ColG,ColB);
+             }
+            RougePrec[4]=ColR;
+            VertPrec[4]=ColG;
+            BleuPrec[4]=ColB;
+        break;
+        case (640*240)+29*6: 
+            println(RougePrec[5]+"::::"+ColR+"  (" +(RougePrec[5]-ColR) );
+            if(abs( RougePrec[5]-ColR)>15) 
+            {
+             tableau[5]=color(ColR, ColG,ColB);
+             }
+            RougePrec[5]=ColR;
+            VertPrec[5]=ColG;
+            BleuPrec[5]=ColB;
+        break;
+        
+        case (640*240)+29*7:
+            if(abs( RougePrec[6]-ColR)>15) 
+            {
+             tableau[6]=color(ColR, ColG,ColB);
+             }
+            RougePrec[6]=ColR;
+            VertPrec[6]=ColG;
+            BleuPrec[6]=ColB;
+        break;
+        case (640*240)+29*8: 
+                    if(abs( RougePrec[7]-ColR)>15) 
+            {
+             tableau[7]=color(ColR, ColG,ColB);
+             }
+            RougePrec[7]=ColR;
+            VertPrec[7]=ColG;
+            BleuPrec[7]=ColB;
+        break;
+        case (640*240)+29*9:
+                    if(abs( RougePrec[8]-ColR)>15) 
+            {
+             tableau[8]=color(ColR, ColG,ColB);
+             }
+            RougePrec[8]=ColR;
+            VertPrec[8]=ColG;
+            BleuPrec[8]=ColB;
+        break;
+        case (640*240)+29*10: 
+                    if(abs( RougePrec[9]-ColR)>15) 
+            {
+             tableau[9]=color(ColR, ColG,ColB);
+             }
+            RougePrec[9]=ColR;
+            VertPrec[9]=ColG;
+            BleuPrec[9]=ColB;
+        break;
+        case (640*240)+29*11: tableau[10]=color(ColR, ColG,ColB); break;
+      }
+       if (i==153920)//if(i==int((width/2)*(height/2))*2+(width/2)   )//num de la pixel du milieu de l'écran
       {
         ColR=diffR;
         ColG=diffG;
         ColB=diffB;
-   
+       pointCentrale=color(ColR, ColG,ColB);
+
       }
+     if (i==13920)//if(i==int((width/2)*(height/2))*2+(width/2)   )//num de la pixel du milieu de l'écran
+      {
+        ColR=diffR;
+        ColG=diffG;
+        ColB=diffB;
+       pointHaut=color(ColR, ColG,ColB);
+
+      }
+      
+      
       // Add these differences to the running tally
       presenceSum += diffR + diffG + diffB;
       // Render the difference image to the screen
       pixels[i] = color(diffR, diffG, diffB);
-      if(i==int( (width/2)*(height/2))*2+(width/2)   )//num de la pixel du milieu de l'écran
+      
+       if ((i==153920)||(i==13920)) //if(i==int( (width/2)*(height/2))*2+(width/2)   )//num de la pixel du milieu de l'écran
       {
         pixels[i] = color(0, 0,0);
-        println(i);
-        println(numPixels);
+        //println(i);
+        //println(numPixels);
       }
       // The following line does the same thing much faster, but is more technical
       //pixels[i] = 0xFF000000 | (diffR << 16) | (diffG << 8) | diffB;
     }
+    
+    
     updatePixels(); // Notify that the pixels[] array has changed
-    fill(color(ColR, ColG, ColB));
-    rect(5, 5, 425, 25);
+    fill(pointCentrale);
+   // rect(5, 5, 425, 25);
     noStroke();
     //rect(int(width/2)-5, int(height/2)-5, 10, 10);
-     ellipse(int(width/2)-0, int(height/2)-0, 20, 20);
-
+    ellipse(int(width/2)-0, int(height/2)-0, 20, 20);
+    //481
+    
+  
+      fill(pointHaut);
+     ellipse(481, 25, 20, 20);
+     
+      if(prendrePhoto)
+      {
+         prendrePhoto=false;
+        // save("fond.tif");
+         saveFrame("fond.tif");
+         delay(3000);
+          img = loadImage("fond.tif");
+ 
+      } else image(img, 0, 0);
+      //
+      for(int k=0;k<11;k++)
+      {
+      fill(tableau[k]);
+       if ((k>3)&&(k<10))
+       {
+           rect(58*k, 50, 58,height-100);
+            //stroke(123);
+           ellipse((58*k)+29, 240, 20, 20);
+       }
+      }
+      
+      
+     
 
     //println(presenceSum+" diffR:"+diffR+" diffG:"+diffG+"  diffB:"+diffB); // Print out the total amount of movement
 //println(""+hour()+""+year()+"-"+rajouteZero(month())+"-"+rajouteZero(day()));
@@ -130,13 +275,19 @@ void draw() {
       //thread1.setLog(""+year()+""+month()+""+day()+""+hour()+""+minute()+"."+millis());
     }
   }
+  delay(30);
 }
 
 // When a key is pressed, capture the background image into the backgroundPixels
 // buffer, by copying each of the current frame's pixels into it.
 void keyPressed() {
-  video.loadPixels();
-  arraycopy(video.pixels, backgroundPixels);
+  //video.loadPixels();
+  //arraycopy(video.pixels, backgroundPixels);
+
+    prendrePhoto=true;
+   //saveFrame("fond.tif");
+   //save("diagonal.tif");
+ //img = loadImage("fond.tif");
 }
 
 
