@@ -38,6 +38,7 @@ color[] BleuPrec = new color[11];
 int row=640*240;
 int largeurBande=60;
 PImage img;
+<<<<<<< HEAD
 boolean prendrePhoto=true;//on pren un image au démarrage du programme
 
 
@@ -45,6 +46,14 @@ boolean prendrePhoto=true;//on pren un image au démarrage du programme
 void setup() {
   size(640, 480); //640
   //fullScreen();
+=======
+boolean prendrePhoto=false;
+
+
+void setup() {
+  size(640, 480); //640
+ //fullScreen();
+>>>>>>> b24f2432db791284fca7fbc10277c8ea0256b1d6
   String[] cameras = Capture.list();
   if (cameras == null) {
     println("Failed to retrieve the list of available cameras, will try the default...");
@@ -63,14 +72,23 @@ void setup() {
     // Or, the settings can be defined based on the text in the list
     //cam = new Capture(this, 640, 480, "Built-in iSight", 30);
     video.start();
+<<<<<<< HEAD
   }
 
 
+=======
+    img = loadImage("fond.tif");
+
+  }
+
+  
+>>>>>>> b24f2432db791284fca7fbc10277c8ea0256b1d6
   numPixels = video.width * video.height;
   // Create array to store the background image
   backgroundPixels = new int[numPixels];
   // Make the pixels[] array available for direct manipulation
   loadPixels();
+<<<<<<< HEAD
 
   thread1 = new SimpleThread(10000, "a");
   thread1.start();
@@ -87,6 +105,21 @@ void setup() {
 
 //XXXXXXXXXXXXXXXXX  DRAW 
 
+=======
+  
+  thread1 = new SimpleThread(10000, "a");
+  thread1.start();
+  
+  RougePrec[0]=0;
+  RougePrec[4]=0;
+   RougePrec[5]=0;
+   RougePrec[6]=0;
+   RougePrec[7]=0;
+   RougePrec[8]=0;
+   RougePrec[9]=0;
+}
+
+>>>>>>> b24f2432db791284fca7fbc10277c8ea0256b1d6
 void draw() {
   if (video.available()) {
     video.read(); // Read a new video frame
@@ -96,11 +129,19 @@ void draw() {
     int diffR = 0;
     int diffG =0;
     int diffB = 0;
+<<<<<<< HEAD
 
     int ColR = 0;
     int ColG =0;
     int ColB = 0;
 
+=======
+    
+    int ColR = 0;
+    int ColG =0;
+    int ColB = 0;
+    
+>>>>>>> b24f2432db791284fca7fbc10277c8ea0256b1d6
     for (int i = 0; i < numPixels; i++) { // For each pixel in the video frame...
       // Fetch the current color in that location, and also the color
       // of the background in that spot
@@ -118,6 +159,7 @@ void draw() {
       diffR = abs(currR - bkgdR);
       diffG = abs(currG - bkgdG);
       diffB = abs(currB - bkgdB);
+<<<<<<< HEAD
 
 
       //test de pixelization
@@ -204,34 +246,134 @@ void draw() {
       }//fin switch
       
       if (i==153920)//if(i==int((width/2)*(height/2))*2+(width/2)   )//num de la pixel du milieu de l'écran
+=======
+      
+      
+      //test de pixelization
+       //fill(color(diffR, diffG, diffB));
+       //noStroke();
+       //ellipse(int(width/2)-0, int(height/2)-0, 3, 3);
+        ColR=diffR;
+        ColG=diffG;
+        ColB=diffB;
+        
+       switch(i)
+       {
+        case (640*240)+29: tableau[0]=color(ColR, ColG,ColB);break;
+        case (640*240)+29*2: tableau[1]=color(ColR, ColG,ColB); break;
+        case (640*240)+29*3: tableau[2]=color(ColR, ColG,ColB); break;
+        case (640*240)+29*4: tableau[3]=color(ColR, ColG,ColB); break;
+        case (640*240)+29*5: 
+            if(abs( RougePrec[4]-ColR)>15) 
+            {
+             tableau[4]=color(ColR, ColG,ColB);
+             }
+            RougePrec[4]=ColR;
+            VertPrec[4]=ColG;
+            BleuPrec[4]=ColB;
+        break;
+        case (640*240)+29*6: 
+            println(RougePrec[5]+"::::"+ColR+"  (" +(RougePrec[5]-ColR) );
+            if(abs( RougePrec[5]-ColR)>15) 
+            {
+             tableau[5]=color(ColR, ColG,ColB);
+             }
+            RougePrec[5]=ColR;
+            VertPrec[5]=ColG;
+            BleuPrec[5]=ColB;
+        break;
+        
+        case (640*240)+29*7:
+            if(abs( RougePrec[6]-ColR)>15) 
+            {
+             tableau[6]=color(ColR, ColG,ColB);
+             }
+            RougePrec[6]=ColR;
+            VertPrec[6]=ColG;
+            BleuPrec[6]=ColB;
+        break;
+        case (640*240)+29*8: 
+                    if(abs( RougePrec[7]-ColR)>15) 
+            {
+             tableau[7]=color(ColR, ColG,ColB);
+             }
+            RougePrec[7]=ColR;
+            VertPrec[7]=ColG;
+            BleuPrec[7]=ColB;
+        break;
+        case (640*240)+29*9:
+                    if(abs( RougePrec[8]-ColR)>15) 
+            {
+             tableau[8]=color(ColR, ColG,ColB);
+             }
+            RougePrec[8]=ColR;
+            VertPrec[8]=ColG;
+            BleuPrec[8]=ColB;
+        break;
+        case (640*240)+29*10: 
+                    if(abs( RougePrec[9]-ColR)>15) 
+            {
+             tableau[9]=color(ColR, ColG,ColB);
+             }
+            RougePrec[9]=ColR;
+            VertPrec[9]=ColG;
+            BleuPrec[9]=ColB;
+        break;
+        case (640*240)+29*11: tableau[10]=color(ColR, ColG,ColB); break;
+      }
+       if (i==153920)//if(i==int((width/2)*(height/2))*2+(width/2)   )//num de la pixel du milieu de l'écran
+>>>>>>> b24f2432db791284fca7fbc10277c8ea0256b1d6
       {
         ColR=diffR;
         ColG=diffG;
         ColB=diffB;
+<<<<<<< HEAD
         pointCentrale=color(ColR, ColG, ColB);
       }
       if (i==13920)//if(i==int((width/2)*(height/2))*2+(width/2)   )//num de la pixel du milieu de l'écran
+=======
+       pointCentrale=color(ColR, ColG,ColB);
+
+      }
+     if (i==13920)//if(i==int((width/2)*(height/2))*2+(width/2)   )//num de la pixel du milieu de l'écran
+>>>>>>> b24f2432db791284fca7fbc10277c8ea0256b1d6
       {
         ColR=diffR;
         ColG=diffG;
         ColB=diffB;
+<<<<<<< HEAD
         pointHaut=color(ColR, ColG, ColB);
       }
 
 
+=======
+       pointHaut=color(ColR, ColG,ColB);
+
+      }
+      
+      
+>>>>>>> b24f2432db791284fca7fbc10277c8ea0256b1d6
       // Add these differences to the running tally
       presenceSum += diffR + diffG + diffB;
       // Render the difference image to the screen
       pixels[i] = color(diffR, diffG, diffB);
+<<<<<<< HEAD
 
       if ((i==153920)||(i==13920)) //if(i==int( (width/2)*(height/2))*2+(width/2)   )//num de la pixel du milieu de l'écran
       {
         pixels[i] = color(0, 0, 0);
+=======
+      
+       if ((i==153920)||(i==13920)) //if(i==int( (width/2)*(height/2))*2+(width/2)   )//num de la pixel du milieu de l'écran
+      {
+        pixels[i] = color(0, 0,0);
+>>>>>>> b24f2432db791284fca7fbc10277c8ea0256b1d6
         //println(i);
         //println(numPixels);
       }
       // The following line does the same thing much faster, but is more technical
       //pixels[i] = 0xFF000000 | (diffR << 16) | (diffG << 8) | diffB;
+<<<<<<< HEAD
       
     }//fin de la loop sur les pixels  :: for (int i = 0; i < numPixels; i++) 
     updatePixels(); // Notify that the pixels[] array has changed
@@ -239,10 +381,19 @@ void draw() {
     
     fill(pointCentrale);
     // rect(5, 5, 425, 25);
+=======
+    }
+    
+    
+    updatePixels(); // Notify that the pixels[] array has changed
+    fill(pointCentrale);
+   // rect(5, 5, 425, 25);
+>>>>>>> b24f2432db791284fca7fbc10277c8ea0256b1d6
     noStroke();
     //rect(int(width/2)-5, int(height/2)-5, 10, 10);
     ellipse(int(width/2)-0, int(height/2)-0, 20, 20);
     //481
+<<<<<<< HEAD
 
 
     fill(pointHaut);
@@ -273,6 +424,39 @@ void draw() {
 
     //println(presenceSum+" diffR:"+diffR+" diffG:"+diffG+"  diffB:"+diffB); // Print out the total amount of movement
     //println(""+hour()+""+year()+"-"+rajouteZero(month())+"-"+rajouteZero(day()));
+=======
+    
+  
+      fill(pointHaut);
+     ellipse(481, 25, 20, 20);
+     
+      if(prendrePhoto)
+      {
+         prendrePhoto=false;
+        // save("fond.tif");
+         saveFrame("fond.tif");
+         delay(3000);
+          img = loadImage("fond.tif");
+ 
+      } else image(img, 0, 0);
+      //
+      for(int k=0;k<11;k++)
+      {
+      fill(tableau[k]);
+       if ((k>3)&&(k<10))
+       {
+           rect(58*k, 50, 58,height-100);
+            //stroke(123);
+           ellipse((58*k)+29, 240, 20, 20);
+       }
+      }
+      
+      
+     
+
+    //println(presenceSum+" diffR:"+diffR+" diffG:"+diffG+"  diffB:"+diffB); // Print out the total amount of movement
+//println(""+hour()+""+year()+"-"+rajouteZero(month())+"-"+rajouteZero(day()));
+>>>>>>> b24f2432db791284fca7fbc10277c8ea0256b1d6
 
     if (thread1.available()) {
       thread1.setLog(""+minute()+"."+second());
@@ -285,19 +469,33 @@ void draw() {
       //thread1.setLog(""+chiffreA+":"+chiffreB+"...("+year()+"-"+month()+"-"+day()+")"+hour()+":"+minute()+".."+millis()+"."+(millis()-int(duree)));
       //thread1.setLog(""+year()+""+month()+""+day()+""+hour()+""+minute()+"."+millis());
     }
+<<<<<<< HEAD
   }//if videoavalable
   delay(30);
 }
 
 
 
+=======
+  }
+  delay(30);
+}
+
+>>>>>>> b24f2432db791284fca7fbc10277c8ea0256b1d6
 // When a key is pressed, capture the background image into the backgroundPixels
 // buffer, by copying each of the current frame's pixels into it.
 void keyPressed() {
   //video.loadPixels();
   //arraycopy(video.pixels, backgroundPixels);
 
+<<<<<<< HEAD
   prendrePhoto=true;
+=======
+    prendrePhoto=true;
+   //saveFrame("fond.tif");
+   //save("diagonal.tif");
+ //img = loadImage("fond.tif");
+>>>>>>> b24f2432db791284fca7fbc10277c8ea0256b1d6
 }
 
 
