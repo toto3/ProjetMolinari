@@ -9,7 +9,7 @@
  todo:
  -filtre passe bas pour stabiliser le changement de couleur des bandes
  -détecteur de stabilité afin de prendre des image de fond quand y a personne devant la cam
- 
+ -
  */
 
 
