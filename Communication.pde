@@ -464,10 +464,9 @@ class SimpleThread extends Thread {
         if (!ModeTest)
         { 
           // String[] php = loadStrings("  &log="+log+"&temps="+temps+"&moment="+moment+"&chiffA="+chiffA+"&chiffB="+chiffB+"&cur="+cur+"&jour="+jour+"&heure="+heure+"");
-          //http://localhost:8888/Monilari/monilari.php?rouge=11&vert=22&bleu=33//
-          String[] php = loadStrings("http://localhost:8888/Monilari/monilari.php?rouge="+rouge+"&vert="+vert+"&bleu="+bleu+"&jour="+jour+"&heure="+heure);
+   
+          String[] php = loadStrings("http://localhost:8888/site/page.php?rouge="+rouge+"&vert="+vert+"&bleu="+bleu+"&jour="+jour+"&heure="+heure);
         }
-        println("http://localhost:8888/Monilari/monilari.php?rouge="+rouge+"&vert="+vert+"&bleu="+bleu+"&jour="+jour+"&heure="+heure);
         rougePrevious=rouge;
         vertPrevious=vert;
       }      
